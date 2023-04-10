@@ -1,0 +1,1 @@
+db = SqliteDatabase('2021-07-31-lichess-evaluations-37MM.db')
