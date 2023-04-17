@@ -56,7 +56,13 @@ def vectorize(fen):
     #put en-passant square in the vector
     if passant != '-':
         bit_vector[0,  5 if (int(passant[1])-1 == 3) else 2 , ord(passant[0]) - 97,] = 1
-        
+    
+    half_moves = bin(int(half_moves))
+    half_moves = half_moves[2:]
+    half_moves = half_moves.zfill(8)
+    
+    for c,bit in enumerate(half_moves):
+        bit_vector[0,1,c] = bit
     return bit_vector
     
 print(vectorize(r'rnbqkb1r/ppp1pppp/3p4/3nP3/3P4/8/PPPK1PPP/RNBQ1BNR b kq - 1 4')[0])
