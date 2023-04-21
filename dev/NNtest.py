@@ -7,22 +7,40 @@ from sklearn.model_selection import train_test_split
 # Define the neural network architecture
 model = tf.keras.Sequential([
     #tf.keras.layers.Flatten(input_shape=(13, 8, 8)),
-    tf.keras.layers.Dense(832, activation='relu'),
-    tf.keras.layers.Dense(400, activation='relu'),
-    tf.keras.layers.Dense(200, activation='relu'),
+    tf.keras.layers.Dense(1024, activation='relu'),
+    tf.keras.layers.Dense(512, activation='relu'),
+    tf.keras.layers.Dense(256, activation='relu'),
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dense(1, activation='linear')
 ])
 
 # Compile the model
-model.compile(optimizer='RMSprop',
+model.compile(optimizer='rmsprop',
               loss='MeanSquaredError',
               metrics=['accuracy'])
+
+def parse_fn(line):
+    # Parse the line into features and labels
+    features, label = line.split(';')
+    features = np.array(re.findall(r'\d+', features), dtype=np.float32)
+    label = np.float32(label)
+
+    return features, label
+
+# Load the data from a CSV file
+data = pd.read_csv('data.csv', header=None, names=['data'])
+data = data['data'].values.tolist()
+
+# Create a Dataset object
+dataset = tf.data.Dataset.from_tensor_slices(data)
+dataset = dataset.map(parse_fn)
+dataset = dataset.shuffle(buffer_size=len(data))
+dataset = dataset.batch(batch_size)
 
 def train_neural_network(positions, scores):
 
     # Set training and testing data
-    x_train, x_test, y_train, y_test = train_test_split(positions, scores, random_state=0, train_size = .75)
+    x_train, x_test, y_train, y_test = train_test_split(positions, scores, random_state=0, train_size=.75)
     print(x_train.shape)
     x_train = x_train.reshape(len(x_train), 832)
     x_test = x_test.reshape(len(x_test), 832)
@@ -39,6 +57,10 @@ def train_neural_network(positions, scores):
     # Print the evaluation metrics
     print(f"Test loss: {loss:.4f}")
     print(f"Test accuracy: {accuracy:.4f}")
+
+# Run the training function with the data
+train_neural_network(dataset, dataset)
+
     
 def vectorize(fen):
     data = re.split(" ", fen)
