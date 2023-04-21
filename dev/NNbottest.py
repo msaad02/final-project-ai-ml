@@ -190,21 +190,8 @@ def preprocess_scores(scores):
     
     return scores
 
-df = pd.read_csv('KaggleDataset/chessData.csv', nrows=100000, dtype={'FEN':str, 'Evaluation':str})
-positions = np.ndarray(shape=(100000,13,8,8), dtype='float32')
-for i, f in enumerate(df.FEN):
-    positions[i] = vectorize(f)
-scores = df.Evaluation.to_numpy()
-scores = preprocess_scores(scores)
 
-print(scores)
-
-train_neural_network(positions, scores)
-
-
-print(np.argmax(model.predict(vectorize('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e3 0 1').reshape(1,832))))
-
-def main():
+if __name__ == '__main__':
     board = chess.Board()
     depth = 3
 
@@ -224,4 +211,17 @@ def main():
     print("Game over")
     print("Result:", board.result())
 
-main()
+    df = pd.read_csv('KaggleDataset/chessData.csv', nrows=100000, dtype={'FEN':str, 'Evaluation':str})
+    positions = np.ndarray(shape=(100000,13,8,8), dtype='float32')
+    for i, f in enumerate(df.FEN):
+        positions[i] = vectorize(f)
+    scores = df.Evaluation.to_numpy()
+    scores = preprocess_scores(scores)
+    
+    print(scores)
+    
+    train_neural_network(positions, scores)
+    
+    
+    print(np.argmax(model.predict(vectorize('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e3 0 1').reshape(1,832))))
+
