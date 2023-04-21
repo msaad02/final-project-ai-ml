@@ -161,22 +161,25 @@ def vectorize(fen):
     return bit_vector
 
 def preprocess_scores(scores):
+    max_score = 150
+    min_score = -150
+    checkmate_mod = 100
     for i, score in enumerate(scores):
         try:
             int(score)
         except:
             print(score)
         if score[0:2] == '#+':
-            scores[i] = 16
+            scores[i] = max_score + checkmate_mod
         elif score[0:2] == '#-':
-            scores[i] = -16
-        elif int(score) > 15:
-            scores[i] = 15
-        elif int(score) < -15:
-            scores[i] = -15
+            scores[i] = min_score - checkmate_mod
+        elif int(score) > max_score:
+            scores[i] = max_score
+        elif int(score) < min_score:
+            scores[i] = min_score
         else:
             scores[i] = int(score)
-    #scale between -15 and 15
+    #scale between -150 and 150
     #scores += 16
     #scores /= 32
     
