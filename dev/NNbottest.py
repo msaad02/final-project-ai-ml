@@ -5,6 +5,7 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from keras import backend as K
 import chess
+from sklearn.preprocessing import MinMaxScaler
 
 def evaluate(board):
     #print(vectorize(board.fen()).shape)
@@ -182,8 +183,6 @@ def preprocess_scores(scores):
     #scale between -150 and 150
     #scores += 16
     #scores /= 32
-    
-    from sklearn.preprocessing import MinMaxScaler
 
     # Assuming your labels are stored in a NumPy array called 'labels'
     scaler = MinMaxScaler(feature_range=(-1, 1))
