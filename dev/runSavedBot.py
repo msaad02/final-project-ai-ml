@@ -71,7 +71,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
 if __name__ == '__main__':
     model = tf.keras.models.load_model('saved_model')
     
-    board = chess.Board('rn1Q4/b7/p1p3Q1/1p6/3P1k2/5b1r/PPP2P1P/3RR1K1 w - - 2 37')
+    board = chess.Board()
     depth = 3
 
     while not board.is_game_over():
