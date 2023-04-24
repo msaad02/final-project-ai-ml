@@ -1,3 +1,6 @@
+import re
+import numpy as np
+
 def vectorize(fen):
     data = re.split(" ", fen)
     rows= re.split("/", data[0])
