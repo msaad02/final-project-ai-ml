@@ -7,7 +7,7 @@ def evaluate(board):
     #print(vectorize(board.fen()).shape)
     evaluation = model.predict_step(utils.vectorize(board.fen()).reshape((1,832)))
     #print(evaluation)
-    return evaluation
+    return round(float(evaluation), 4)
 
 def find_best_move(board, depth, maximizing_player):
     if maximizing_player:
@@ -35,7 +35,11 @@ def find_best_move(board, depth, maximizing_player):
     return best_move
     
 def minimax(board, depth, alpha, beta, maximizing_player):
-    if board.is_game_over() or depth == 0:
+    if board.is_checkmate():
+        return -10000 if maximizing_player else 10000
+    if board.is_game_over(claim_draw=True):
+        return 9000 if maximizing_player else -9000
+    if depth == 0:
         return evaluate(board)
     
     if maximizing_player:
@@ -43,7 +47,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
         for move in board.legal_moves:
             board.push(move)
             score = minimax(board, depth-1, alpha, beta, False)
-            #score += depth
+            score += depth
             board.pop()
             best_score = max(score, best_score)
             alpha = max(alpha, best_score)
@@ -55,7 +59,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
         for move in board.legal_moves:
             board.push(move)
             score = minimax(board, depth-1, alpha, beta, True)
-            #score -= depth
+            score -= depth
             board.pop()
             best_score = min(score, best_score)
             beta = min(beta, best_score)
