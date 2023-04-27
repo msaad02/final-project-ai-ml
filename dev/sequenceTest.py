@@ -21,14 +21,14 @@ class DataSequence(keras.utils.Sequence):
     def __getitem__(self, idx):
         df = pd.read_csv(self.file, skiprows=idx*self.batch_size, nrows=self.batch_size)
       
-        x = np.ndarray(shape=(self.batch_size,13,8,8))
+        x = np.ndarray(shape=(self.batch_size,832))
         y = np.array(df.iloc[:,1])
       
         #have preprocessing here right now for testing, should save processed scores in file
         # once we decide how to do this
         for i, f in enumerate(df.iloc[:,0]):
             x[i] = utils.vectorize(f)
-        x = x.reshape((self.batch_size,832))
+        
         y = utils.preprocess_scores(y)
         #print(x.shape, y.shape)
         #print(idx)

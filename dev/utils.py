@@ -87,4 +87,4 @@ def vectorize(fen):
     if passant != '-':
         bit_vector[0,  5 if (int(passant[1])-1 == 3) else 2 , ord(passant[0]) - 97,] = 1
     
-    return bit_vector
+    return bit_vector.reshape((1,832))

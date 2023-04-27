@@ -5,7 +5,7 @@ import utils
 
 def evaluate(board):
     #print(vectorize(board.fen()).shape)
-    evaluation = model.predict_step(utils.vectorize(board.fen()).reshape((1,832)))
+    evaluation = model.predict_step(utils.vectorize(board.fen()))
     #print(evaluation)
     return round(float(evaluation), 4)
 
