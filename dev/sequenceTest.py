@@ -15,7 +15,7 @@ class DataSequence(keras.utils.Sequence):
     def __len__(self):
         #total_length = sum(1 for row in open(self.file))
         total_length = 4000000
-        return int(np.ceil(total_length) / self.batch_size)
+        return int(np.ceil(total_length / self.batch_size))
     
     
     def __getitem__(self, idx):
