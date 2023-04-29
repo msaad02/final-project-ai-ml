@@ -1,33 +1,19 @@
 import re
 import numpy as np
-import tensorflow as tf
 
-def preprocess_scores(scores):
-    for i, score in enumerate(scores):
-        score = str(score).encode('utf-8')
-        score = score.decode('utf-8-sig')
-        #print(f'i: {i} score: {score}, type: {type(score)}')
-        
-        if score[0:2] == '#+':
-            score = 1501
-        elif score[0:2] == '#-':
-            score = -1501
-        elif int(score) > 1500:
-            score = 1500
-        elif int(score) < -1500:
-            score = -1500
-        
-        scores[i] = int(score)
-    #scale between -15 and 15
-    #scores += 16
-    #scores /= 32
+def preprocess_scores(eval):
+    score_dict = {
+        '#+': 20,
+        '#-': -20
+    }
 
-    #scaler = MinMaxScaler(feature_range=(-1, 1))
-    #scores = scaler.fit_transform(scores.reshape(-1, 1))
-    
-    scores = scores.astype('float32')
-    
-    return scores
+    try:
+        eval = int(eval)
+        eval = max(min(eval, 15), -15)
+    except ValueError:
+        eval = score_dict.get(eval[0:2], 0)
+
+    return eval
 
 def vectorize(fen):
     data = re.split(" ", fen)
@@ -86,4 +72,4 @@ def vectorize(fen):
     if passant != '-':
         bit_vector[0,  5 if (int(passant[1])-1 == 3) else 2 , ord(passant[0]) - 97,] = 1
     
-    return bit_vector
+    return bit_vector.flatten()
