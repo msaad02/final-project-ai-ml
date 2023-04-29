@@ -25,8 +25,6 @@ model = tf.keras.Sequential([
 model.compile(optimizer='adam',
               loss='MeanAbsoluteError')
 
-df = pd.read_csv("../data/kaggleDataset/chessData.csv", nrows=10000, dtype={'FEN':str, 'Evaluation':str})
-
 train_sequence = DataSequence("../data/kaggleDataset/chessData.csv", 1024)
 
 # Train the model

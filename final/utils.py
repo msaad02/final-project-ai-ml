@@ -1,5 +1,6 @@
 import re
 import numpy as np
+import pandas as pd
 
 def preprocess_scores(eval):
     score_dict = {
@@ -73,3 +74,29 @@ def vectorize(fen):
         bit_vector[0,  5 if (int(passant[1])-1 == 3) else 2 , ord(passant[0]) - 97,] = 1
     
     return bit_vector.flatten()
+
+
+def processDF(df):
+    fen_strings = df.FEN
+    evaluations = df.Evaluation.apply(preprocess_scores)
+
+    # Vectorize the FEN strings
+    vectorized_data = np.vstack([vectorize(fen) for fen in fen_strings])
+
+    # Combine the vectorized data with the evaluations
+    combined_data = np.hstack((vectorized_data, np.array(evaluations).reshape(-1, 1)))
+
+    # Define the column names
+    column_names = [i for i in range(832)] + ["Evaluation"]
+
+    # Create the DataFrame
+    df = pd.DataFrame(combined_data, columns=column_names, dtype=np.int8)
+    
+    return df
+
+def processFEN(FEN):
+    vectorized_data = np.vstack([vectorize(FEN)])
+    column_names = [i for i in range(832)]
+    df = pd.DataFrame(vectorized_data, columns=column_names, dtype=np.int8)
+
+    return df
