@@ -4,13 +4,13 @@ import pandas as pd
 
 def preprocess_scores(eval):
     score_dict = {
-        '#+': 20,
-        '#-': -20
+        '#+': 2000,
+        '#-': -2000
     }
 
     try:
         eval = int(eval)
-        eval = max(min(eval, 15), -15)
+        eval = max(min(eval, 1500), -1500)
     except ValueError:
         eval = score_dict.get(eval[0:2], 0)
 
