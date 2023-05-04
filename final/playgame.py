@@ -3,7 +3,7 @@ import chess
 
 import runBotHelpers
 
-model = tf.keras.models.load_model("C:\\Users\\Matthew Saad\\OneDrive\\College\\Spring 2023\\AI & ML\\Final-Project-AI-ML\\saved_models\\corrected_12mil_3epoch_64batch_0.0001learnRate")
+model = tf.keras.models.load_model("C:\\Users\\Matthew Saad\\OneDrive\\College\\Spring 2023\\AI & ML\\Final-Project-AI-ML\\saved_models\\corrected_12mil_25epoch_64batch_0.0001learnRate")
 
 board = chess.Board()
 depth = 2
