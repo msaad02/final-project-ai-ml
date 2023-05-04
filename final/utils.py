@@ -25,7 +25,7 @@ def vectorize(fen):
     half_moves = data[4]
     full_moves = data[5]
     
-    bit_vector = np.zeros((13, 8, 8), dtype=np.float32)
+    bit_vector = np.zeros((13, 8, 8), dtype=np.int8)
     #print(bit_vector.shape)
     #what layer each piece is found on
     piece_to_layer = {
