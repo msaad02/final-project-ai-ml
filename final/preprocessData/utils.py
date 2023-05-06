@@ -3,18 +3,32 @@ import numpy as np
 import pandas as pd
 
 def preprocess_scores(eval):
-    score_dict = {
-        '#+': 2000,
-        '#-': -2000
-    }
+    if eval.startswith('#'):
+        mating_value = int(eval[2:])
+        if mating_value == 0:
+            value = 6_000
+        else:
+            value = max(5_000 - (mating_value - 1) * 200, 3_000)
 
-    try:
+        if eval.startswith('#+'):
+            value = value
+        else:
+            value = -1 * value
+
+    else:
         eval = int(eval)
-        eval = max(min(eval, 1500), -1500)
-    except ValueError:
-        eval = score_dict.get(eval[0:2], 0)
+        scaleFactor = (5_000 - 1_500) / 1_000
 
-    return eval
+        if -1_500 <= eval <= 1_500:
+            value = eval
+        elif eval < -1_500:
+            value = (eval + 1_500)/scaleFactor - 1_500
+        else:
+            value = (eval - 1_500)/scaleFactor + 1_500
+
+        value = max(min(value, 3_200), -3_200)
+
+    return np.int16(value)
 
 def vectorize(fen):
     data = re.split(" ", fen)
@@ -78,7 +92,7 @@ def vectorize(fen):
 
 def processDF(df):
     fen_strings = df.FEN
-    evaluations = df.Evaluation.apply(preprocess_scores)
+    evaluations = df.Evaluation.apply(preprocess_scores).astype(np.int16)
 
     # Vectorize the FEN strings
     vectorized_data = np.vstack([vectorize(fen) for fen in fen_strings])
@@ -90,7 +104,7 @@ def processDF(df):
     column_names = [i for i in range(832)] + ["Evaluation"]
 
     # Create the DataFrame
-    df = pd.DataFrame(combined_data, columns=column_names, dtype=np.int8)
+    df = pd.DataFrame(combined_data, columns=column_names, dtype=np.int16)
     
     return df
 
