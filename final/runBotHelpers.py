@@ -16,6 +16,7 @@ def preprocess_scores(eval):
 
     return eval
 
+
 def vectorize(fen):
     data = re.split(" ", fen)
     rows= re.split("/", data[0])
