@@ -102,7 +102,7 @@ def processFEN(FEN):
     return df
 
 def evaluate(board, model):
-    evaluation = model.predict_step(np.asarray(utils.processFEN(board.fen())))
+    evaluation = model.predict_step(np.asarray(processFEN(board.fen())))
     return evaluation
 
 def find_best_move(board, depth, maximizing_player, model):
