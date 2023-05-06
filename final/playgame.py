@@ -6,7 +6,7 @@ import runBotHelpers
 model = tf.keras.models.load_model("C:\\Users\\Matthew Saad\\OneDrive\\College\\Spring 2023\\AI & ML\\Final-Project-AI-ML\\saved_models\\stockfish_1mil_25epoch_64batch_0.001learningRate")
 
 board = chess.Board()
-depth = 2
+depth = 4
 
 while not board.is_game_over():
     print(board)

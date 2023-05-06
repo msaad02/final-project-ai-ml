@@ -3,6 +3,7 @@ data/*
 dev/saved_model
 
 final/__pycache__
+final/__pycache__/__pycache__
 
 .vscode
 
