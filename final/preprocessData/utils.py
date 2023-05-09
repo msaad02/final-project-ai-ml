@@ -6,9 +6,9 @@ def preprocess_scores(eval):
     if eval.startswith('#'):
         mating_value = int(eval[2:])
         if mating_value == 0:
-            value = 6_000
+            value = 2_500
         else:
-            value = max(5_000 - (mating_value - 1) * 200, 3_000)
+            value = max(2_500 - (mating_value - 1) * 50, 2_000)
 
         if eval.startswith('#+'):
             value = value
@@ -17,16 +17,16 @@ def preprocess_scores(eval):
 
     else:
         eval = int(eval)
-        scaleFactor = (5_000 - 1_500) / 1_000
+        scaleFactor = (5_000 - 1_000) / 1_000
 
-        if -1_500 <= eval <= 1_500:
+        if -1_000 <= eval <= 1_000:
             value = eval
-        elif eval < -1_500:
-            value = (eval + 1_500)/scaleFactor - 1_500
+        elif eval < -1_000:
+            value = (eval + 1_000)/scaleFactor - 1_000
         else:
-            value = (eval - 1_500)/scaleFactor + 1_500
+            value = (eval - 1_000)/scaleFactor + 1_000
 
-        value = max(min(value, 3_200), -3_200)
+        value = max(min(value, 2_000), -2_000)
 
     return np.int16(value)
 
